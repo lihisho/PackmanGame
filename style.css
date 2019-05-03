@@ -26,7 +26,7 @@ body
 	-webkit-border-radius: 5px;
 }
 /*menu list elements*/
-.menu li 
+.menu li
 {
 	display:inline;
 }
@@ -40,8 +40,7 @@ body
 	padding: 10px 25px;
 	height:15px;
 	border-radius: 5px;
-	border-bottom: 5px soild white;
-
+	/*border-bottom: 5px solid white;*/
 }
 .menu a:hover
 {
@@ -51,8 +50,8 @@ body
 /*limit size of all images*/
 
 .content{
-	min-width: width 1366px; ;
-	min-width: height 768px; ;
+	min-width: 1366px; ;
+	min-width: 768px; ;
 }
 
 .content button
@@ -63,7 +62,7 @@ body
 	border: 2px solid #555555;
 }
 
-.content button 
+.content button
 {
   background-color: #F5D76E;
   color: black;
@@ -72,7 +71,7 @@ body
 #Welcome{
 	background-image:url(Images/Packman2.png);
 	background-repeat: no-repeat;
-	min-height: 100%; 
+	min-height: 100%;
 }
 
 [id^=welcomeButton]{
@@ -85,7 +84,7 @@ body
 }
 
 [id^=welcomeButton]:hover{
-	background-color: #ffffe6; 
+	background-color: #ffffe6;
   	color: black;
 }
 
@@ -98,7 +97,7 @@ body
 
 /* #welcomeButton1:after{
 	content:'\f2f6';
-	font-family:fontAwesome; 
+	font-family:fontAwesome;
 	padding-left: 10px;
 } */
 
@@ -109,25 +108,143 @@ body
 }
 
 
+/* start lihi */
 
+/*body*/
+/*{*/
+/*	font-family: Arial;*/
+/*	color: #067778;*/
+/*	background: url('https://s-media-cache-ak0.pinimg.com/originals/74/85/dd/7485dd35a00469f9bc612cdcdf0e05a2.jpg');*/
+/*	background-position: center;*/
 
+/*}*/
 
+.loginform, .registerform
+{
+	width: 350px;
+	height: 500px;
+	position: absolute;
+	left: 50%;
+	margin-left:-175px;
+	border: none;
+	border-radius: 10px;
+	top: 100px;
+	line-height: 5px;
+	text-align: center;
+	background-color: #A9E2F3;
+	/*background-color: #839470;*/
+	font-family: 'Courier New', Courier, monospace;
+	-webkit-box-shadow: 0px 0px 36px 1px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 36px 1px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 36px 1px rgba(0,0,0,0.75);
 
-
-
-
-h1{ color: white; font-family:'Open Sans Condensed', sans-serif;font-size: 46px; font-weight: 100;
-	letter-spacing: 1px; text-shadow: -3px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
-	margin-top:60px;}
-
-h2{
-	font-size: bold;
-	color:white;
-	text-shadow:-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+}
+.settingForm
+{
+	width: 750px;
+	height: 600px;
+	position: absolute;
+	margin-left:-175px;
+	border: none;
+	border-radius: 10px;
+	top: 100px;
+	line-height: 5px;
+	text-align: center;
+	background-color: #A9E2F3;
+	/*background-color: #839470;*/
+	font-family: 'Courier New', Courier, monospace;
+	-webkit-box-shadow: 0px 0px 36px 1px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 36px 1px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 36px 1px rgba(0,0,0,0.75);
 }
 
+.whitetop
+{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 50px;
+	box-shadow: none;
+	background: white;
+	border-radius: 10px 10px 0px 0px;
+	font-family: 'Courier New', Courier, monospace;
 
-p{
-	  text-shadow:-1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; text-align: center; letter-spacing: 1px;font-family: Georgia, 'Times New Roman', Times, serif; color:whitesmoke;
 }
 
+h3
+{
+	font-family: 'Courier New', Courier, monospace;
+	position: relative;
+	top: 5px;
+}
+
+.mail, .pass , .name , .date
+{
+	position: relative;
+	top: 65px;
+	height: 25px;
+	width: 200px;
+	margin: 10px;
+	border:none;
+	background-color: #A9E2F3;
+	/*background-color: #b3aba1;*/
+	font-family: 'Courier New', Courier, monospace;
+	border: none;
+	border-bottom: 2px solid white;
+	transition: all 0.5s ;
+}
+
+.mail:focus, .pass:focus , .name:focus
+{
+	outline: none;
+	border-bottom: 2px solid #088A85;
+	width: 250px;
+}
+
+.submit
+{
+	position: relative;
+	top: 160px;
+	width: 160px;
+	height: 30px;
+	border: none;
+	background-color: white;
+	color: #49B8A8;
+	font-size: 15px;
+	font-weight: bold;
+	transition: all 0.5s;
+	font-family: 'Courier New', Courier, monospace;
+
+}
+.submit:hover
+{
+	background-color: #088A85;
+	color: white;
+	border-radius: 10px;
+}
+/*.login*/
+/*{*/
+/*	position: absolute;*/
+/*	left: 0;*/
+/*	top: 50px;*/
+/*	height: 40px;*/
+/*	width: 173px;*/
+/*	text-align: center;*/
+/*	vertical-align: middle;*/
+/*	line-height: 40px;*/
+/*	cursor: pointer;*/
+/*}*/
+/*.register*/
+/*{*/
+/*	position: absolute;*/
+/*	right: 0;*/
+/*	top: 50px;*/
+/*	height: 40px;*/
+/*	width: 173px;*/
+/*	text-align: center;*/
+/*	vertical-align: middle;*/
+/*	line-height: 40px;*/
+/*	cursor: pointer;*/
+/*}*/
+
+/* end lihi */
