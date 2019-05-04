@@ -119,9 +119,30 @@ body
 
 /*}*/
 
-.loginform, .registerform
+.loginform {
+	width: 400px;
+	height: 400px;
+	position: absolute;
+	left: 50%;
+	margin-left:-175px;
+	border: none;
+	border-radius: 10px;
+	top: 100px;
+	line-height: 5px;
+	text-align: center;
+	/*background-color: #A9E2F3;*/
+	/*background-color: #839470;*/
+	background-color: papayawhip;
+	font-family: 'Courier New', Courier, monospace;
+	-webkit-box-shadow: 0px 0px 36px 1px rgba(0,0,0,0.75);
+	-moz-box-shadow: 0px 0px 36px 1px rgba(0,0,0,0.75);
+	box-shadow: 0px 0px 36px 1px rgba(0,0,0,0.75);
+
+}
+.registerform
 {
-	width: 350px;
+
+	width: 400px;
 	height: 500px;
 	position: absolute;
 	left: 50%;
@@ -131,8 +152,9 @@ body
 	top: 100px;
 	line-height: 5px;
 	text-align: center;
-	background-color: #A9E2F3;
+	/*background-color: #A9E2F3;*/
 	/*background-color: #839470;*/
+	background-color: papayawhip;
 	font-family: 'Courier New', Courier, monospace;
 	-webkit-box-shadow: 0px 0px 36px 1px rgba(0,0,0,0.75);
 	-moz-box-shadow: 0px 0px 36px 1px rgba(0,0,0,0.75);
@@ -186,41 +208,58 @@ h3
 	width: 200px;
 	margin: 10px;
 	border:none;
-	background-color: #A9E2F3;
+	font-size: 16px;
+	/*background-color: #A9E2F3;*/
 	/*background-color: #b3aba1;*/
+	background-color: papayawhip;
 	font-family: 'Courier New', Courier, monospace;
 	border: none;
 	border-bottom: 2px solid white;
+	box-sizing: border-box;
 	transition: all 0.5s ;
 }
 
 .mail:focus, .pass:focus , .name:focus
 {
 	outline: none;
-	border-bottom: 2px solid #088A85;
+	border-bottom: 2px solid #e8a71a;
 	width: 250px;
 }
 
 .submit
 {
 	position: relative;
-	top: 160px;
+	top: 100px;
 	width: 160px;
 	height: 30px;
 	border: none;
 	background-color: white;
-	color: #49B8A8;
+	color: #715827;
 	font-size: 15px;
 	font-weight: bold;
 	transition: all 0.5s;
 	font-family: 'Courier New', Courier, monospace;
+	box-sizing: border-box;
 
 }
 .submit:hover
 {
-	background-color: #088A85;
+	/*background-color: #088A85;*/
+	background-color: #e8a71a;
 	color: white;
 	border-radius: 10px;
+}
+
+
+label {
+	display: block;
+	margin: 10px 0;
+}
+
+label.error {
+	color: #140303;
+	margin: 10px 0;
+	font-size: 14px;
 }
 
 #settingsTable {
@@ -228,17 +267,12 @@ h3
 }
 
 #keysTable{
-    margin-top: 100px;
-    margin-right: 70px;
+	margin-top: 100px;
+	margin-right: 70px;
 }
 
 .keys{
-    width: 60px;
-    height: 20px;
-}
-
-body{
-    width:90%;
-    margin:0 auto;
+	width: 60px;
+	height: 20px;
 }
 

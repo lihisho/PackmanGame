@@ -2,18 +2,22 @@
 <html xmlns="http://www.w3.org/1999/html">
 
 <head>
-    <script src="jquery.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
+    <script src="jquery.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
     <script type="text/javascript" src="login.js"></script>
     <script type="text/javascript" src="SettingsPage.js"></script>
     <script type="text/javascript" src="register.js"></script>
+    $.noConflict();
 </head>
 
 <body>
     <!--header-->
     <header>
-            <!--complete header here-->     
+            <!--complete header here-->
     </header>
 
     <div class="menu">
@@ -24,7 +28,7 @@
         <li><a herf="#" onclick="toggle('About')">About</a></li>
     </div>  
 
-    <div class="content" id="Welcome" style="display:none;">
+    <div class="content" id="Welcome" style="display:block;">
         <br>
         <br>
         <button id="welcomeButtonRegister" type="button" onclick="toggle('Register')">Register </button>
@@ -33,7 +37,7 @@
         <br>
     </div>
     <div class="content" id="Register" style="display:none;">
-        <form  method="post" class="registerform" id="register_form" onSubmit= "javascript:checkform()">
+        <form  method="post" class="registerform"  id="register_form">
             <div class=whitetop>
                 <h3> Register information</h3>
             </div>
@@ -49,24 +53,26 @@
             <br>
             <input class="date" type="Date" name="date" required>
             <br>
-            <input class="submit" type="submit" name="submit" herf="#" value="Register">
+            <input class="submit" type="submit" name="submit"  onclick="validateRegister(); return false;" value="Register">
         </form>
 
     </div>
     <div class="content" id="Login" style="display:none;">
-        <form action="login" method="post" class="loginform">
+        <form method="post" class="loginform">
             <div class=whitetop>
                 <h3> Login information</h3>
             </div>
-            <input class="name" type="username" name="username" placeholder="username" required >
+
+            <input class="name" type="text" id="username" placeholder="username" required >
             <br>
-            <input class="pass" type="password" name="password" placeholder="password" required>
+            <input class="pass" type="password" id="password" placeholder="password" required>
             <br>
+            <input class="submit" id="submitLogin" type="button" onclick="validateLogin()" value="Login">
+
         </form>
         <br>
-        <input class="submit" type="submit" herf="#" onclick="toggle('Settings')" value="Login">
     </div>
-    <div class="content" id="Settings" style="display:block;">
+    <div class="content" id="Settings" style="display:none;">
         <container class="settingForm">
             <div class="whitetop">
                 <h3> Settings </h3>
@@ -172,6 +178,12 @@
     var time_elapsed;
     var interval;
     var pacDirection;
+    var currentUser;
+    var users = ['a'];
+    var passwords =  ['a'];
+
+
+    Start();
 
     function Start() {
         board = new Array();
