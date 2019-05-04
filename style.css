@@ -141,16 +141,16 @@ body
 }
 .settingForm
 {
-	width: 750px;
-	height: 600px;
+	width: 80%;
+	height: 70%;
 	position: absolute;
-	margin-left:-175px;
+	margin-left:-380px;
 	border: none;
 	border-radius: 10px;
 	top: 100px;
 	line-height: 5px;
 	text-align: center;
-	background-color: #A9E2F3;
+	background-color: papayawhip;
 	/*background-color: #839470;*/
 	font-family: 'Courier New', Courier, monospace;
 	-webkit-box-shadow: 0px 0px 36px 1px rgba(0,0,0,0.75);
@@ -222,29 +222,23 @@ h3
 	color: white;
 	border-radius: 10px;
 }
-/*.login*/
-/*{*/
-/*	position: absolute;*/
-/*	left: 0;*/
-/*	top: 50px;*/
-/*	height: 40px;*/
-/*	width: 173px;*/
-/*	text-align: center;*/
-/*	vertical-align: middle;*/
-/*	line-height: 40px;*/
-/*	cursor: pointer;*/
-/*}*/
-/*.register*/
-/*{*/
-/*	position: absolute;*/
-/*	right: 0;*/
-/*	top: 50px;*/
-/*	height: 40px;*/
-/*	width: 173px;*/
-/*	text-align: center;*/
-/*	vertical-align: middle;*/
-/*	line-height: 40px;*/
-/*	cursor: pointer;*/
-/*}*/
 
-/* end lihi */
+#settingsTable {
+	margin-top:70px;
+}
+
+#keysTable{
+    margin-top: 100px;
+    margin-right: 70px;
+}
+
+.keys{
+    width: 60px;
+    height: 20px;
+}
+
+body{
+    width:90%;
+    margin:0 auto;
+}
+
