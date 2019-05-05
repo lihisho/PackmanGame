@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/html">
 
 <head>
+    <script src="jquery.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
-    <script src="jquery.js" type="text/javascript"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
@@ -20,13 +20,14 @@
             <!--complete header here-->
     </header>
 
-    <div class="menu">
+    <nav class="menu">
+        <li id="loggedInUser">Hi <b>Stranger</b>!</li>
         <li><a herf="#" onclick="toggle('Welcome')">Welcome</a></li>
         <li><a herf="#" onclick="toggle('Register')">Register</a></li>
         <li><a herf="#" onclick="toggle('Login')">Login</a></li>
         <li><a herf="#" onclick="toggle('Settings')">Settings</a></li>
         <li><a herf="#" onclick="toggle('About')">About</a></li>
-    </div>  
+    </nav>
 
     <div class="content" id="Welcome" style="display:block;">
         <br>
@@ -152,13 +153,20 @@
     <div class="content" id="About" style="display:none;">
         hi5
     </div>
+
     <div class="content" id="Game" style="display:none;">
         <br>
         <br>
-        SCORE:
-        <input id="lblScore" type="text"/>
+        <ul class="image-gallery-lifes">
+            <li><c>Lifes: </c></li>
+            <li> <img src="Images/pacmanLife.PNG" height="20px" width="20px"></li>
+            <li> <img src="Images/pacmanLife.PNG" height="20px" width="20px"></li>
+            <li> <img src="Images/pacmanLife.PNG" height="20px" width="20px"></li>
+        </ul>
+        <c>SCORE: </c>
+        <input id="lblScore" type="t`ext"/>
         <br/>
-        TIME:
+        <d>TIME:</d>
         <input id="lblTime" type="text"/>
         <br/> 
         <canvas id="canvas" height="600" width="600"></canvas>
@@ -173,29 +181,31 @@
     var shape = new Object();
     var board;
     var score;
+    var pacLife;
     var pac_color;
     var start_time;
     var time_elapsed;
     var interval;
     var pacDirection;
-    var currentUser;
     var users = ['a'];
     var passwords =  ['a'];
-
-
-    Start();
+    var backgroundAudio= new Audio("game_background_music.mp3");
+    backgroundAudio.addEventListener('ended', function() {
+        this.currentTime = 0;
+        this.play();
+    }, false);
 
     function Start() {
         board = new Array();
         score = 0;
         pac_color = "yellow";
+        pacLife=3;
         pacDirection =1;
         var cnt = 100;
         var food_remain = $('.range-slider input[type=range]').val();
         var fivePointFood= Math.floor(0.6* food_remain);
         var fifteenPointFood= Math.floor(0.3* food_remain);
         var twentyFivePointFood= Math.ceil(0.1* food_remain);
-
         var pacman_remain = 1;
         start_time = new Date();
         for (var i = 0; i < 10; i++) {
@@ -204,7 +214,11 @@
             for (var j = 0; j < 10; j++) {
                 if ((i === 3 && j === 3) || (i === 3 && j === 4) || (i === 3 && j === 5) || (i === 6 && j === 1) || (i === 6 && j === 2)) {
                     board[i][j] = 4;
-                } else {
+                }
+                else if ((i===7 && j===7) || (i===8 && j===1)){
+                    board[i][j]=6;//extra life
+                }
+                else {
                     var randomNum = Math.random();
                     if (randomNum <= 1.0 * food_remain / cnt) {
                         food_remain--;
@@ -327,12 +341,18 @@
                     context.fillStyle = "grey"; //color
                     context.fill();
                 }
+                else if (board[i][j]===6){
+                    var img= new Image();
+                    img.src="Images/heart.PNG";
+                    context.drawImage(img,i*60,j*60,20,20);
+                }
             }
         }
     }
 
     function UpdatePosition() {
         board[shape.i][shape.j] = 0;
+        var gameTime= $('input[name=gameTime]').val();
         var x = GetKeyPressed();
         if (x === 1) { //ArrowUp
             if (shape.j > 0 && board[shape.i][shape.j - 1] !== 4) {
@@ -367,18 +387,32 @@
         if (board[shape.i][shape.j] === 5){
             score+=5;
         }
-
+        if (board[shape.i][shape.j] === 6){ //pacman got life
+            $(".image-gallery-lifes").append('<li> <img src="Images/pacmanLife.PNG" height="20px" width="20px"></li>');
+            pacLife++;
+        }
         board[shape.i][shape.j] = 2;
         var currentTime = new Date();
         time_elapsed = (currentTime - start_time) / 1000;
-        if (score >= 20 && time_elapsed <= 10) {
-            pac_color = "green";
-        }
-        if (score === 200) {
+        // if (score >= 20 && time_elapsed <= 10) {
+        //     pac_color = "green";
+        // }
+
+        //handle end of game
+        if (pacLife=== 0) {
             window.clearInterval(interval);
-            window.alert("Game completed");
+            backgroundAudio.pause();
+            alert("You Lost!");
+        } else if(time_elapsed>= gameTime) {
+            window.clearInterval(interval);
+            backgroundAudio.pause();
+            if( score < 150)
+                alert("You can do better than "+score+" points");
+            else
+                alert("We have a Winner!!!")
         } else {
             Draw();
+
         }
     }
 
@@ -392,7 +426,16 @@
         }
         // toggle current
         targ.style.display = "block";
-    }   
+        if(target === 'Game'){
+            backgroundAudio.play();
+        }
+        else {
+            backgroundAudio.pause();
+            backgroundAudio.currentTime=0;
+        }
+    }
+
+
 </script>
 </body>
 

@@ -14,7 +14,7 @@ function validateLogin(){
         if (username === users[i]) {
             found = true;
             if (password === passwords[i]) {
-                currentUser = username;
+                $("#loggedInUser > b").text(username);
                 $('#username').val('')
                 $('#password').val('')
                 toggle("Settings");

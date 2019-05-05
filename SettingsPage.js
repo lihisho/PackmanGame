@@ -48,6 +48,33 @@
     }
 
     function activateGame(){
-        Start();
-        toggle('Game');
+        // let loggedUser=$("#loggedInUser > b").text();
+        // if(loggedUser==='Stranger') {
+        //     alert("You must log in before playing!");
+        //     return;
+        // }
+        // else
+        if(!allSettingsWereSet()) {
+            alert("Not all settings were set. Please check the setting page again");
+            return;
+        }
+        let gameDuration= $('input[name=gameTime]').val();
+        if (gameDuration <60) {
+            alert("Please enter game duration above 60 seconds");
+            return''
+        }
+        else{
+            Start();
+            toggle('Game');
+        }
+    }
+
+    function allSettingsWereSet(){
+        let keysSelected = $('#keyUp').text()!=='' &&  $('#keyDown').text()!==''  && $('#keyRight').text()!==''
+        && $('#keyLeft').text();
+        let gameDurationSet = $('input[name=gameTime]').val()!=='';
+        if(keysSelected && gameDurationSet)
+            return true;
+        else
+            return false;
     }

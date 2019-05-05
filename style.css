@@ -276,3 +276,14 @@ label.error {
 	height: 20px;
 }
 
+#loggedInUser{
+	position: absolute;
+	margin-left: -300px;
+	margin-top: 10px;
+}
+
+.image-gallery-lifes li{
+	 display: inline;
+}
+
+
