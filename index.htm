@@ -2,9 +2,9 @@
 <html xmlns="http://www.w3.org/1999/html">
 
 <head>
-    <script src="jquery.js" type="text/javascript"></script>
     <link rel="stylesheet" type="text/css" href="style.css" />
     <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
+    <script src="jquery.js" type="text/javascript"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
@@ -153,7 +153,6 @@
     <div class="content" id="About" style="display:none;">
         hi5
     </div>
-
     <div class="content" id="Game" style="display:none;">
         <br>
         <br>
@@ -164,12 +163,15 @@
             <li> <img src="Images/pacmanLife.PNG" height="20px" width="20px"></li>
         </ul>
         <c>SCORE: </c>
-        <input id="lblScore" type="t`ext"/>
+        <input id="lblScore" type="text"/>
         <br/>
         <d>TIME:</d>
         <input id="lblTime" type="text"/>
-        <br/> 
-        <canvas id="canvas" height="600" width="600"></canvas>
+        <br/>
+        <br/>
+        <canvas id="canvas" height="600" width="1200"></canvas>
+        <br/>
+        <input type="button" value="New Game!" onclick="if(confirm('Are you sure you want to start a new game?')) toggle('Settings')">
     </div>
 
     <footer>
@@ -187,37 +189,57 @@
     var time_elapsed;
     var interval;
     var pacDirection;
+    var currentUser;
     var users = ['a'];
     var passwords =  ['a'];
+    var monsters;
     var backgroundAudio= new Audio("game_background_music.mp3");
     backgroundAudio.addEventListener('ended', function() {
         this.currentTime = 0;
         this.play();
     }, false);
+    //monster class
+    class monster{
+        constructor(x,y,url){
+            this.x= x;
+            this.y=y;
+            this.img = new Image();
+            this.img.src = url;
+        }
+    }
 
     function Start() {
         board = new Array();
+        monsters = [];
         score = 0;
         pac_color = "yellow";
         pacLife=3;
         pacDirection =1;
-        var cnt = 100;
+        var cnt = 200;
         var food_remain = $('.range-slider input[type=range]').val();
         var fivePointFood= Math.floor(0.6* food_remain);
         var fifteenPointFood= Math.floor(0.3* food_remain);
         var twentyFivePointFood= Math.ceil(0.1* food_remain);
+        // 0=empty 1= 25-Food, 2=pacman, 3=15-Food, 4=wall, 5=5-Food, 6=life
         var pacman_remain = 1;
+        var monster_remain = $('select[name=numMonsters]').val();
+        initiateMonsters();
         start_time = new Date();
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < 20; i++) {
             board[i] = new Array();
             //put obstacles in (i=3,j=3) and (i=3,j=4) and (i=3,j=5), (i=6,j=1) and (i=6,j=2)
             for (var j = 0; j < 10; j++) {
-                if ((i === 3 && j === 3) || (i === 3 && j === 4) || (i === 3 && j === 5) || (i === 6 && j === 1) || (i === 6 && j === 2)) {
+                if (checkWalls(i,j)){
                     board[i][j] = 4;
                 }
-                else if ((i===7 && j===7) || (i===8 && j===1)){
-                    board[i][j]=6;//extra life
+                else if ((i===16 && j===4)|| (i===6 && j===9)){
+                    board[i][j] = 6;
                 }
+
+                // else if (monster_remain  > 0 && ((i===0 && j===0) || (i===0 && j===9)|| (i===9 && j===0)) ){
+                //         board[i][j] = 6;
+                //         monster_remain--;
+                // }
                 else {
                     var randomNum = Math.random();
                     if (randomNum <= 1.0 * food_remain / cnt) {
@@ -266,7 +288,19 @@
         interval = setInterval(UpdatePosition, 120);
     }
 
+    function initiateMonsters(){
 
+        monsters.push(new monster(0,0,"Images/greenMonster.jpg"));
+        monsters.push(new monster(0,9,"Images/yellowMonster.png"));
+        monsters.push(new monster(19,0,"Images/redMonster.png"));
+
+        // var monster1 = new Image();
+        // monster1.src=("Images/greenMonster.jpg");
+        // var monster2 = new Image();
+        // monster2.src=("Images/yellowMonster.png");
+        // var monster3 = new Image();
+        // monster3.src="Images/redMonster.png";
+    }
     function findRandomEmptyCell(board) {
         var i = Math.floor((Math.random() * 9) + 1);
         var j = Math.floor((Math.random() * 9) + 1);
@@ -299,7 +333,8 @@
         context.clearRect(0, 0, canvas.width, canvas.height); //clean board
         lblScore.value = score;
         lblTime.value = time_elapsed;
-        for (var i = 0; i < 10; i++) {
+        var monsterCount=0;
+        for (var i = 0; i < 20; i++) {
             for (var j = 0; j < 10; j++) {
                 var center = new Object();
                 center.x = i * 60 + 30;
@@ -324,7 +359,23 @@
                     context.fillStyle = "black"; //color
                     context.fill();
                     // drawPackman();
-                } else if (board[i][j] === 1 || board[i][j] === 3 || board[i][j] ===5) {
+                // } else if (board[i][j] === 6){
+                //     context.beginPath();
+                //     if(monsterCount===0){
+                //         monsterCount++;
+                //         context.drawImage(monster1,i*60,j*60,60,60);
+                //     }
+                //     else if(monsterCount===1){
+                //         monsterCount++;
+                //         context.drawImage(monster2,i*60,j*60,60,60);
+                //     }
+                //     else if (monsterCount===2){
+                //         monsterCount++;
+                //         context.drawImage(monster3,i*60,j*60,60,60);
+                //     }
+
+                }
+                else if (board[i][j] === 1 || board[i][j] === 3 || board[i][j] ===5) {
                     context.beginPath();
                     context.arc(center.x, center.y, 7, 0, 2 * Math.PI); // circle
                     if(board[i][j]===1) {
@@ -337,14 +388,14 @@
                     context.fill();
                 } else if (board[i][j] === 4) {
                     context.beginPath();
-                    context.rect(center.x - 30, center.y - 30, 5, 60);
-                    context.fillStyle = "grey"; //color
+                    context.rect(center.x -30,center.y-30, 60, 60);
+                    context.fillStyle = "lightskyblue"; //color
                     context.fill();
                 }
                 else if (board[i][j]===6){
                     var img= new Image();
                     img.src="Images/heart.PNG";
-                    context.drawImage(img,i*60,j*60,20,20);
+                    context.drawImage(img,i*60+24,j*60+30,20,20);
                 }
             }
         }
@@ -373,7 +424,7 @@
             }
         }
         if (x === 4) { //ArrowRight
-            if (shape.i < 9 && board[shape.i + 1][shape.j] !== 4) {
+            if (shape.i < 20 && board[shape.i + 1][shape.j] !== 4) {
                 shape.i++;
                 pacDirection=1;
             }
@@ -412,8 +463,14 @@
                 alert("We have a Winner!!!")
         } else {
             Draw();
-
         }
+    }
+    function checkWalls(i,j){
+        if ((i === 3 && j === 3) || (i === 3 && j === 4) || (i === 3 && j === 5) || (i === 6 && j === 1) || (i === 6 && j === 2)
+            || (i === 6 && j === 4)|| (i === 6 && j === 5)) {
+            return true;
+        }
+        else return false;
     }
 
 

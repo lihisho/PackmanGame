@@ -48,20 +48,19 @@
     }
 
     function activateGame(){
-        // let loggedUser=$("#loggedInUser > b").text();
-        // if(loggedUser==='Stranger') {
-        //     alert("You must log in before playing!");
-        //     return;
-        // }
-        // else
-        if(!allSettingsWereSet()) {
+        let loggedUser=$("#loggedInUser > b").text();
+        if(loggedUser==='Stranger') {
+            alert("You must log in before playing!");
+            return;
+        }
+        else if(!allSettingsWereSet()) {
             alert("Not all settings were set. Please check the setting page again");
             return;
         }
         let gameDuration= $('input[name=gameTime]').val();
         if (gameDuration <60) {
             alert("Please enter game duration above 60 seconds");
-            return''
+            return;
         }
         else{
             Start();
