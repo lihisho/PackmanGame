@@ -63,10 +63,22 @@
             return;
         }
         else{
+            setColorsForUserKey();
             Start();
             toggle('Game');
         }
     }
+
+    function setColorsForUserKey(){
+        //5pt
+        var fiveColor=$('input[name=5ptColor]').val();
+        $('input[name=5PtKeyColor]').val(fiveColor);
+        //15pt
+        var fifteenColor=$('input[name=15ptColor]').val();
+        $('input[name=15PtKeyColor]').val(fifteenColor);
+        //25pt
+        var twentyFiveColor=$('input[name=25ptColor]').val();
+        $('input[name=25PtKeyColor]').val(twentyFiveColor);    }
 
     function allSettingsWereSet(){
         let keysSelected = $('#keyUp').text()!=='' &&  $('#keyDown').text()!==''  && $('#keyRight').text()!==''

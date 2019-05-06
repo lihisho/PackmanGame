@@ -153,24 +153,34 @@
         hi5
     </div>
     <div class="content" id="Game" style="display:none;">
-        <br>
-        <br>
-        <ul class="image-gallery-lifes">
+        <ul id="gameDetails">
+            <li><c>SCORE: </c>
+                <input id="lblScore" type="text"/>
+            </li>
+            <li>
+                <c>TIME:</c>
+                <input id="lblTime" type="text"/>
+            </li>
+            <li>
+                <c>5Pt:</c>
+                <input type="color" name="5PtKeyColor" disabled>
+            </li>
+            <li>
+                <c>15Pt:</c>
+                <input type="color" name="15PtKeyColor" disabled>
+            </li>
+            <li>
+                <c>25Pt:</c>
+                <input type="color" name="25PtKeyColor" disabled>
+            </li>
             <li><c>Lifes: </c></li>
             <li> <img src="Images/pacmanLife.PNG" height="20px" width="20px"></li>
             <li> <img src="Images/pacmanLife.PNG" height="20px" width="20px"></li>
             <li> <img src="Images/pacmanLife.PNG" height="20px" width="20px"></li>
         </ul>
-        <c>SCORE: </c>
-        <input id="lblScore" type="text"/>
-        <br/>
-        <d>TIME:</d>
-        <input id="lblTime" type="text"/>
-        <br/>
-        <br/>
         <canvas id="canvas" height="600" width="1200"></canvas>
-        <br/>
-        <input type="button" value="New Game!" onclick=startNewGame()>
+        <br>
+        <input id="newGameButton" type="button" value="New Game!" onclick=startNewGame()>
     </div>
 
     <footer>
@@ -191,12 +201,16 @@
     var users = ['a'];
     var passwords =  ['a'];
     var monsters;
+    var movingChar;
+    var bonusCharacterEaten=false;
     var monster_count;
     var backgroundAudio= new Audio("game_background_music.mp3");
     backgroundAudio.addEventListener('ended', function() {
         this.currentTime = 0;
         this.play();
     }, false);
+    var lostGif=new Image();
+
 
     function startNewGame(){
         if(confirm('Are you sure you want to start a new game?')){
@@ -233,6 +247,7 @@
         var pacman_remain = 1;
         monster_count = $('select[name=numMonsters]').val();
         initiateMonsters();
+        movingChar=[19,9,"Images/moving_character.PNG"];
         start_time = new Date();
         for (var i = 0; i < 20; i++) {
             board[i] = new Array();
@@ -290,7 +305,7 @@
             keysDown[e.code] = false;
         }, false);
         interval = setInterval(UpdatePosition, 160);
-        monsterInterval =setInterval(moveMonsters,  400);
+        monsterInterval =setInterval(moveGohsts,  400);
     }
 
     function initiateMonsters(){
@@ -383,14 +398,21 @@
                 //draw food
                 else if (board[i][j] === 1 || board[i][j] === 3 || board[i][j] ===5) {
                     context.beginPath();
-                    context.arc(center.x, center.y, 7, 0, 2 * Math.PI); // circle
+                    // context.textAlign='center';
+                    // context.textBaseline='middle';
                     if(board[i][j]===1) {
+                        context.arc(center.x, center.y, 12, 0, 2 * Math.PI); // circle
                         context.fillStyle = $('input[name=25ptColor]').val(); //color
+                        context.fill;
                     }
-                    else if(board[i][j] === 3)
+                    else if(board[i][j] === 3) {
+                        context.arc(center.x, center.y, 9, 0, 2 * Math.PI); // circle
                         context.fillStyle = $('input[name=15ptColor]').val();
-                    else if(board[i][j] === 5)
+                    }
+                    else if(board[i][j] === 5) {
                         context.fillStyle = $('input[name=5ptColor]').val();
+                        context.arc(center.x, center.y, 6, 0, 2 * Math.PI); // circle
+                    }
                     context.fill();
 
                 } //draw walls
@@ -404,6 +426,12 @@
                     var img= new Image();
                     img.src="Images/heart.PNG";
                     context.drawImage(img,i*60+24,j*60+30,20,20);
+                }
+                //draw moving character
+                if(movingChar[0]=== i && movingChar[1]===j && !bonusCharacterEaten) {
+                    var movingCharImg = new Image();
+                    movingCharImg.src = movingChar[2];
+                    context.drawImage(movingCharImg, i * 60, j * 60, 45, 45);
                 }
                 //draw monsters
                 for(var m =0; m < monster_count; m++){
@@ -468,11 +496,14 @@
             $(".image-gallery-lifes").append('<li> <img src="Images/pacmanLife.png" height="20px" width="20px"></li>');
             pacLife++;
         }
-        board[shape.i][shape.j] = 2
-
+        if(shape.i === movingChar[0] && shape.j === movingChar[1])//pacman ate moving character
+        {
+            score+=50;
+            bonusCharacterEaten=true;
+        }
+        board[shape.i][shape.j] = 2;
         var currentTime = new Date();
         time_elapsed = (currentTime - start_time) / 1000;
-        //moveMonsters();
         //handle end of game
         if (!checkEndGame() && !checkEndTime()){
             Draw();
@@ -511,14 +542,22 @@
             || (i === 6 && j === 4) || (i === 6 && j === 5);
     }
 
-    function moveMonsters() {
+    function moveGohsts() {
         var monster, minDistance = Number.POSITIVE_INFINITY, mDist, minX, minY;
-        var randMovement;
+        var randMovement, optionalMoves, moveIndex;
+        //move moving character
+        optionalMoves=getPossibleMoves(movingChar[0],movingChar[1]);
+        if(optionalMoves.length !==0){
+            moveIndex= Math.floor(Math.random() * Math.floor(optionalMoves.length));
+            movingChar[0]=optionalMoves[moveIndex][0];
+            movingChar[1]=optionalMoves[moveIndex][1];
+        }
+        //move Monsters
         for (var i = 0; i < monster_count; i++) {
             randMovement = Math.random();
             monster = monsters[i];
+            if (randMovement > 0.25) {
             //right
-            // if (randMovement > 0.15) {
                 if (isCorridanteValid(monster.x + 1, monster.y)) {
                     mDist = checkDistanceFromPac(monster.x + 1, monster.y);
                     if (mDist < minDistance) {
@@ -551,23 +590,23 @@
                         minY = monster.y - 1;
                     }
                 }
-            // }
-            //TODO: complete movement randomization
-            // else {
-            //     var optionalMoves = getPossibleMoves(monster.x, monster.y);
-            //     var moveIndex = Math.floor(Math.random() * Math.floor(optionalMoves.length));
-            //     var x= optionalMoves[moveIndex],y=optionalMoves[moveIndex];
-            //     minX=x;
-            //     minY=y;
-            //}
+             }
+            else {
+                optionalMoves = getPossibleMoves(monster.x, monster.y);
+                if(optionalMoves.length>0) {
+                    moveIndex = Math.floor(Math.random() * Math.floor(optionalMoves.length));
+                        minX=optionalMoves[moveIndex][0];
+                        minY=optionalMoves[moveIndex][1];
+                    }
+                }
             if ((i === 0) ||
                 (i === 1 && (minX !== monsters[0].x || minY !== monsters[0].y)) ||
-                (i === 2 && (minX !== monsters[0].x || minY !== monsters[0].y) && (minX !== monsters[1].x || minY !== monsters[1].y))) {
+                (i === 2 && (minX !== monsters[0].x || minY !== monsters[0].y) && (minX !== monsters[1].x || minY !== monsters[1].y))
+                || (minX !== movingChar[0] || minY!== movingChar[1]) ) {
                 monster.x = minX;
                 monster.y = minY;
             }
             //    monster caught pacman
-
             minDistance = Number.POSITIVE_INFINITY;
         }
     }

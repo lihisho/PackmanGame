@@ -290,4 +290,18 @@ h3
 	 display: inline;
 }
 
+#gameDetails li{
+	display: inline;
+	margin-left:20px
 
+}
+
+c{
+	color:rosybrown;
+}
+
+#lblScore,#lblTime{
+	width:7%;
+	height:7%;
+	border-radius: 5px;
+}
