@@ -444,7 +444,7 @@
             if (board[monsters[m].x][monsters[m].y] === 2) {
                 pacLife--;
                 // if(pacLife>=0)
-                $('.image-gallery-lifes li:last-child').remove();
+                $('#gameDetails li:last-child').remove();
                 score = score - 10;
                 if (pacLife > 0) {
                     restoreMonstersAndPacToBase();
