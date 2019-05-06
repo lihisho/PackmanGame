@@ -1,17 +1,24 @@
-html{
-	margin:0;
+html {
 	height: 100%;
+	box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+	box-sizing: inherit;
 }
 
 body
 {
 	background-color:#262626;
 	text-align: center;
-	margin-top:40px;
+	/*margin-top:40px;*/
 	font-family: 'Courier New', Courier, monospace;
-	margin:0;
 	height: 100%;
 }
+
+
 .menu
 {
 	top: 0;
@@ -30,6 +37,7 @@ body
 {
 	display:inline;
 }
+
 
 /*menu buttons*/
 .menu a
