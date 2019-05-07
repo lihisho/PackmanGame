@@ -9,6 +9,7 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
     <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
     <script type="text/javascript" src="login.js"></script>
+    <script type="text/javascript" src="About.js"></script>
     <script type="text/javascript" src="SettingsPage.js"></script>
     <script type="text/javascript" src="register.js"></script>
 <!--    $.noConflict();-->
@@ -149,13 +150,18 @@
             <input type="button" value="Let's play!" onclick="activateGame()">
         </container>
     </div>
-    <div class="content" id="About" class="modal" style="display:none;">
-            <div class="modal-content">
-                <span class="close">&times;</span>
-                <p> </p>
-            </div>
+    <dialog class="content" id="About">
+<!--        <a href="#" id="btnClose" title="Close" class="close">X</a>-->
+        <button id="btnClose" title="Close" class="close" onclick="closeDialog()">X</button>
+        <h2>About</h2>
+        <p> Presentors: Yarden Ezra & Lihi Shoham</p>
+        <p> JQuery plugin was used all around our code but mainly for validation in the login and registration pages,
+        where we used the validate method.</p>
+        <p>The major difficulties were handling the page resolution and creating the wanted layout.
+            For that reason we used a template of known layout containg header, navigation, content and footer as required.
+            Also, the fact that compilation errors are not showed in Web Storm it was hard to recognize the problems and solve them.</p>
+        </dialog>
 
-        </div>
 
     <div class="content" id="Game" style="display:none;">
         <ul id="gameDetails">
@@ -681,21 +687,24 @@
     }
 
     /*switch between divs*/
-    function toggle(target){ 
-        var menuElements= document.getElementsByClassName("content");
-        var targ = document.getElementById(target);          
+    function toggle(target) {
+        var menuElements = document.getElementsByClassName("content");
+        var targ = document.getElementById(target);
         // hide all
-        for(var i=0;i<menuElements.length;i++){
+        for (var i = 0; i < menuElements.length; i++) {
             menuElements[i].style.display = "none";
         }
         // toggle current
         targ.style.display = "block";
-        if(target === 'Game'){
-            backgroundAudio.play();
-        }
-        else {
-            backgroundAudio.pause();
-            backgroundAudio.currentTime=0;
+        if (target === 'About') {
+            document.getElementById('About').showModal();
+        } else {
+            if (target === 'Game') {
+                backgroundAudio.play();
+            } else {
+                backgroundAudio.pause();
+                backgroundAudio.currentTime = 0;
+            }
         }
     }
 
