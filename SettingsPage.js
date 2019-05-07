@@ -3,7 +3,7 @@
         $('.range-slider span').text(val);
     }
 
-    function catchUserChoise(button){
+    function catchUserChoice(button){
             button.addEventListener("keydown", function (e) {
                 $("#key"+button.value).text(e.code);
             }, false);
@@ -65,6 +65,7 @@
         else{
             setColorsForUserKey();
             Start();
+            zoom("80%");
             toggle('Game');
         }
     }

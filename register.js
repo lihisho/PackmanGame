@@ -1,11 +1,7 @@
 function validateRegister() {
 
     var username = $("form#register_form input[name='username']").val();
-    // var fname = $("form#register_form input[name='firstName']").val();
-    // var lname = $("form#register_form input[name='lastName']").val();
-    //var email = $("form#register_form input[name='email']").val();
-    //var email_regex = /^[\w%_\-.\d]+@[\w.\-]+.[A-Za-z]{2,6}$/; // reg ex email check
-     var password = $("form#register_form input[name='password']").val();
+    var password = $("form#register_form input[name='password']").val();
 
     var form = $("#register_form");
     form.validate({
